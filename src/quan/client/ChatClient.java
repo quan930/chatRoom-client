@@ -3,15 +3,15 @@ package quan.client;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.util.HashSet;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ChatClient {
-	static private Scanner read;
-	public static void main(String[] args) throws IOException {
-		Socket client = new Socket("127.0.0.1",6666);
+	private Scanner read;
+	public ChatClient(String ip,int prot) throws UnknownHostException, IOException {
+		Socket client = new Socket(ip,prot);
 		ChatMessage alMessage = new ChatMessage(client);
 		Thread t = new Thread(alMessage);
 		t.start();//开启接收消息的线程
@@ -24,13 +24,13 @@ public class ChatClient {
 		while(true) {
 			System.out.println("名字注册中......");
 			while(true) {
-				if(alMessage.isMakeName()) {
+				if(alMessage.isGetYorN()) {
 					break;
 				}else {
 					continue;
 				}
 			}
-			alMessage.setMakeName(false);
+			alMessage.setGetYorN(false);
 			if(alMessage.getMakeNameMessage().equals("创建成功")) {
 				System.out.println("创建成功");
 				break;
@@ -42,6 +42,7 @@ public class ChatClient {
 				continue;
 			}
 		}
+		alMessage.setGetYorN(false);	
 		//注册完毕执行功能
 		while(true) {
 			System.out.print("请选择功能:");
@@ -60,6 +61,15 @@ public class ChatClient {
 				System.out.println("单发内容:");
 				message = inNewTwo.nextLine();
 				out.println(new ClientProtocol().sendNameMessage(name, message));
+				while(true) {
+					if(alMessage.isGetYorN()) {
+						break;
+					}else {
+						continue;
+					}
+				}
+				System.out.println(alMessage.getOneMessage());
+				alMessage.setGetYorN(false);//收到消息
 				break;
 			case 3:
 				//文件
@@ -68,46 +78,44 @@ public class ChatClient {
 				out.println(new ClientProtocol().onlineNumber());
 				System.out.println("查询中......");
 				while(true) {
-					if(alMessage.isPersonNumYorN()) {
+					if(alMessage.isGetYorN()) {
 						break;
 					}else {
 						continue;
 					}
 				}
 				System.out.println(alMessage.getPersonNum()+"人在线");
-				alMessage.setPersonNumYorN(false);
+				alMessage.setGetYorN(false);
 				break;
 			case 5://显示当前上线的name
 				out.println(new ClientProtocol().onlineName());
 				System.out.println("查询中......");
 				while(true) {
-					if(alMessage.isPersonNameYorN()) {
+					if(alMessage.isGetYorN()) {
 						break;
 					}else {
 						continue;
 					}
 				}
 				System.out.println("上线名单");
-				for(String str : alMessage.getNames()) {
-					System.out.println(str); 
+				for(int i = 0;i < alMessage.getNames().size();i++) {
+					System.out.println(alMessage.getNames().get(i));
 				}
-				alMessage.setPersonNameYorN(false);
-				alMessage.setNames(new HashSet<String>());//清空列表
+				alMessage.listNames(new ArrayList<String>());//清空列表
+				alMessage.setGetYorN(false);
 				break;
 			case 6://退出//线程结束问题没有解决
 				out.println(new ClientProtocol().signOut());
-				alMessage.setOnline(false);//停止接收线程
-//				while(true) {
-//					if(t.getState()) {
-//
-//						System.out.println("线程结束");
-//						break;
-//					}else {
-//						continue;
-//					}
-//				}
-				client.close();
+				while(true) {
+					if(alMessage.isGetYorN()) {
+						break;
+					}else {
+						continue;
+					}
+				}
 				out.close();
+				client.close();
+				System.out.println("下线");
 				return;
 			case 7:
 				for(int i = 0; i < alMessage.getMessages().size(); i++) {
