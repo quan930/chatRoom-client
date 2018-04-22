@@ -104,7 +104,7 @@ public class ChatClient {
 				alMessage.listNames(new ArrayList<String>());//清空列表
 				alMessage.setGetYorN(false);
 				break;
-			case 6://退出//线程结束问题没有解决
+			case 6://退出
 				out.println(new ClientProtocol().signOut());
 				while(true) {
 					if(alMessage.isGetYorN()) {

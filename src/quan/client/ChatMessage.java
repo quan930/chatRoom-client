@@ -104,7 +104,6 @@ public class ChatMessage implements Runnable{
 							}else {
 								if(s.equals("*11*")) {
 									oneMessage = message.substring(4);
-									
 									getYorN = true;
 									continue;
 								}else {
