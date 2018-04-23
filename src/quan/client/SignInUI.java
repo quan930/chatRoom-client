@@ -61,9 +61,9 @@ public class SignInUI {
    	    			if(alMessage.getMakeNameMessage().equals("创建成功")) {
    	   				 //启动一个新的窗口
    	    				alMessage.setGetYorN(false);
-   	    				fNew.showShow();
+   	    				fNew.showShow(name);
    	    				f.dispose();// 关闭并销毁
-   	    				fNew.showShow();
+   	    				fNew.showShow(name);
    	   					break;
    	   				}else {
    	   					tf_name.setText("名字重复,重新注册");

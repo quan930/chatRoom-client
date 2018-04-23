@@ -10,7 +10,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 //全部消息
-//处理消息类
+//处理消息类//命令行界面
 public class ChatMessage implements Runnable{
 	private Socket client;
 	private List<String>messages = new ArrayList<String>();//处理后消息
@@ -79,18 +79,18 @@ public class ChatMessage implements Runnable{
 			//isOnline= true;//上下线
 			while(true){//
 				String message = in.nextLine();//读入数据
-				String s = message.substring(0,4);
-				if(s.equals("*na*")) {//名字指令
+//				String s = message.substring(0,4);
+				if(message.substring(0,4).equals("*na*")) {//名字指令
 					makeNameMessage = message.substring(4);
 					getYorN = true;
 					continue;
 				}else {
-					if(s.equals("*sp*")) {//人数指令
+					if(message.substring(0,4).equals("*sp*")) {//人数指令
 						personNum = Integer.parseInt(message.substring(4));
 						getYorN = true;
 						continue;
 					}else {
-						if(s.equals("Name")) {//人名指令
+						if(message.substring(0,4).equals("Name")) {//人名指令
 							String[] sarray = message.substring(4).split("Name"); 
 					        for(String ss:sarray){
 					            names.add(ss);
@@ -98,11 +98,11 @@ public class ChatMessage implements Runnable{
 					        getYorN = true;
 							continue;
 						}else {
-							if(s.equals("*ou*")) {//退出指令
+							if(message.substring(0,4).equals("*ou*")) {//退出指令
 								getYorN = true;
 								break;
 							}else {
-								if(s.equals("*11*")) {
+								if(message.substring(0,4).equals("*11*")) {
 									oneMessage = message.substring(4);
 									getYorN = true;
 									continue;

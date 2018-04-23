@@ -18,6 +18,6 @@ public class ClientUI {
 		t.start();//开启接收消息的线程
 		PrintWriter out = new PrintWriter(new OutputStreamWriter(client.getOutputStream(),"UTF-8"),true);
 		MainUI as = new MainUI(out, alMessage);
-		new SignInUI(out,alMessage,as);		
+		new SignInUI(out,alMessage,as);
 	}
 }
